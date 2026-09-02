@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Theme 1 – New in Camden: Vocabulary Reveal</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 0 20px;
+      background-color: #f4f7f6;
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 5px;
+    }
+
+    p.instructions {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #666;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 15px;
+    }
+
+    .card {
+      background-color: #ffffff;
+      border: 2px solid #3498db;
+      border-radius: 8px;
+      padding: 18px 10px;
+      text-align: center;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.1s ease, background-color 0.2s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      background-color: #ebf5fb;
+    }
+
+    .german {
+      font-size: 1.15rem;
+      font-weight: bold;
+      color: #2c3e50;
+    }
+
+    .english {
+      margin-top: 10px;
+      font-size: 1.05rem;
+      color: #27ae60;
+      font-weight: bold;
+      display: none;
+    }
+
+    .card.revealed .english {
+      display: block;
+    }
+
+    .card.revealed {
+      border-color: #27ae60;
+      background-color: #e8f8f5;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Theme 1 – New in Camden</h1>
+  <p class="instructions">Click on any German word to reveal the English translation!</p>
+
+  <div class="grid" id="vocabGrid"></div>
+
+  <script>
+    const vocabulary = [
+      // Page 16
+      { german: "neu", english: "new" },
+      { german: "ich habe", english: "I've got (= I have got)" },
+      { german: "haben", english: "to have got" },
+      { german: "der Bruder", english: "brother" },
+      { german: "er", english: "he" },
+      { german: "vierzehn", english: "fourteen" },
+      { german: "klein", english: "small" },
+      { german: "das Haus", english: "house" },
+      { german: "mit", english: "with" },
+      { german: "unser(e)", english: "our" },
+      { german: "die Mama, die Mutti", english: "mum (informal)" },
+      { german: "der Papa, der Vati", english: "dad (informal)" },
+      { german: "die Katze", english: "cat" },
+      { german: "das Meerschweinchen", english: "guinea pig" },
+      { german: "süß, niedlich", english: "cute" },
+      { german: "das Essen", english: "food" },
+      { german: "das Getränk", english: "drink" },
+      { german: "der Orangensaft", english: "orange juice" },
+      { german: "lieben; sehr gern mögen", english: "to love" },
+      { german: "die Süßigkeit", english: "sweet" },
+      { german: "mögen", english: "to like" },
+      { german: "die Musik", english: "music" },
+      { german: "das Tanzen", english: "dancing" },
+      { german: "das Skateboardfahren", english: "skateboarding" },
+      { german: "es", english: "it" },
+      { german: "die Kamera, der Fotoapparat", english: "camera" },
+      { german: "da sind; es gibt", english: "there are" },
+      { german: "viel, jede Menge", english: "lots of" },
+      { german: "das Foto", english: "photo" },
+      { german: "das Zimmer", english: "room" },
+      { german: "tschüss", english: "bye (informal)" },
+      { german: "die Familie", english: "family" },
+      { german: "das Haustier", english: "pet" },
+      { german: "sie", english: "she" },
+      { german: "sie ist", english: "she's (= she is)" },
+
+      // Page 18
+      { german: "sie hat", english: "she's got (= she has got)" },
+      { german: "ihr(e, n); sie", english: "her" },
+      { german: "bist, sind, seid", english: "are" },
+      { german: "das Wort", english: "word" },
+      { german: "diese(r, s); das", english: "this" },
+      { german: "der/die Freund/in", english: "friend" },
+      { german: "auf, an; in; am", english: "on" },
+      { german: "(an)sehen, (an)schauen", english: "to look (at)" },
+      { german: "dort, da", english: "there" },
+      { german: "wo(hin)", english: "where" },
+      { german: "wie", english: "how" },
+
+      // Page 19
+      { german: "er ist", english: "he's (= he is)" },
+      { german: "sie", english: "they" },
+      { german: "alle(s)", english: "all" },
+      { german: "Deutschland", english: "Germany" },
+      { german: "Frankreich", english: "France" },
+      { german: "Polen", english: "Poland" },
+      { german: "Türkei", english: "Turkey" },
+      { german: "bin", english: "am" },
+
+      // Page 20
+      { german: "die Schwester", english: "sister" },
+      { german: "die Wohnung", english: "flat" },
+      { german: "nett; schön", english: "nice" },
+      { german: "groß", english: "big" },
+      { german: "der Balkon", english: "balcony" },
+      { german: "beste(r, s)", english: "best" },
+      { german: "oft, häufig", english: "often" },
+      { german: "(sich) treffen; kennenlernen", english: "to meet" },
+      { german: "der Wellensittich", english: "budgie (= budgerigar)" },
+
+      // Page 21
+      { german: "die Gitarre", english: "guitar" },
+      { german: "das Ding, der Gegenstand, die Sache", english: "thing" },
+      { german: "ich mag nicht", english: "I don't like" },
+      { german: "der Fußball", english: "football" },
+      { german: "spielen", english: "to play" },
+      { german: "das; der/die/das", english: "that" },
+      { german: "großartig, toll", english: "great" }
+    ];
+
+    const grid = document.getElementById('vocabGrid');
+
+    vocabulary.forEach(item => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      
+      card.innerHTML = `
+        <div class="german">${item.german}</div>
+        <div class="english">${item.english}</div>
+      `;
+
+      card.addEventListener('click', () => {
+        card.classList.toggle('revealed');
+      });
+
+      grid.appendChild(card);
+    });
+  </script>
+
+</body>
+</html>
